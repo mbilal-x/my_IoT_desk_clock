@@ -16,26 +16,37 @@ void setup() {
   bool resistorsOnSegments = false; // 'false' means resistors are on digit pins
   byte hardwareConfig = COMMON_CATHODE; // See README.md for options
   bool updateWithDelays = false; // Default 'false' is Recommended
-  bool leadingZeros = false; // Use 'true' if you'd like to keep the leading zeros
+  bool leadingZeros = true; // Use 'true' if you'd like to keep the leading zeros
   bool disableDecPoint = false; // Use 'true' if your decimal point doesn't exist or isn't connected
   
   sevseg.begin(hardwareConfig, numDigits, digitPins, segmentPins, resistorsOnSegments,
   updateWithDelays, leadingZeros, disableDecPoint);
-  sevseg.setBrightness(90);
+  sevseg.setBrightness(20);
 }
 
 void loop() {
   static unsigned long timer = millis();
-  static int deciSeconds = 0;
+  static int Seconds = 0;
+  static int Minutes = 0;
   
-  if (millis() - timer >= 100) {
-    timer += 100;
-    deciSeconds++; // 100 milliSeconds is equal to 1 deciSecond
+  if (millis() - timer >= 1000) { 
+    timer += 1000;
+    Seconds++; // 1000 milliSeconds is equal to 1 Second
     
-    if (deciSeconds == 10000) { // Reset to 0 after counting for 1000 seconds.
-      deciSeconds=0;
+    if (Seconds == 60) { // Reset to 0 after counting for 1000 seconds.
+      Seconds=0;
     }
-    sevseg.setNumber(deciSeconds, 1);
+    sevseg.setNumber(Seconds, 2);
+  }
+// minutes
+    if (millis() - timer >= 60000) { 
+    timer += 1000;
+    Minutes++; // 60000 milliSeconds is equal to 1 Minute
+    
+    if (Minutes == 60) { // Reset to 0 after counting for 1000 seconds.
+      Minutes=0;
+    }
+    sevseg.setNumber(Minutes, 3);
   }
 
   sevseg.refreshDisplay(); // Must run repeatedly
