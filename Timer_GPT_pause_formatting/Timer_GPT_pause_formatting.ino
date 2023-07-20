@@ -19,8 +19,7 @@ bool timerActive = false;
 void setup() {
   byte numDigits = 4; // Number of digits in the display
   byte digitPins[] = {A0, A1, A2, A3}; // Digit pins
-  byte segmentPins[] = {7, 8, 9, 10, 11, 12, 13, A4};
-  sevseg.setBrightness(90); // Segment pins
+  byte segmentPins[] = {7, 8, 9, 10, 11, 12, 13}; // Segment pins
   
   sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
   
@@ -30,6 +29,8 @@ void setup() {
   pinMode(decrementButtonPin, INPUT_PULLUP);
   pinMode(startButtonPin, INPUT_PULLUP);
 }
+
+bool timerPaused = false; // New variable to track the timer pause state
 
 void loop() {
   // Check if the increment button is pressed
@@ -48,13 +49,26 @@ void loop() {
   
   // Check if the start button is pressed
   if (digitalRead(startButtonPin) == LOW) {
-    timerActive = true;
-    timerStartTime = millis(); // Store the start time of the timer
+    if (timerActive) {
+      // If timer is active, toggle pause state
+      timerPaused = !timerPaused;
+      if (timerPaused) {
+        // If the timer is paused, store the remaining time
+        timerDuration -= (millis() - timerStartTime);
+      } else {
+        // If the timer is resumed, set the start time to the current time
+        timerStartTime = millis();
+      }
+    } else {
+      // If timer is not active, start the timer
+      timerActive = true;
+      timerStartTime = millis(); // Store the start time of the timer
+    }
     delay(250); // Delay to avoid button bounce
   }
   
-  // Check if the timer is active
-  if (timerActive) {
+  // Check if the timer is active and not paused
+  if (timerActive && !timerPaused) {
     unsigned long currentTime = millis();
     unsigned long elapsedTime = currentTime - timerStartTime;
     
@@ -84,11 +98,13 @@ void loop() {
     }
   }
   
-  // Calculate remaining minutes and seconds
-  int remainingMinutes = (timerDuration - (millis() - timerStartTime)) / 60000;
-  int remainingSeconds = ((timerDuration - (millis() - timerStartTime)) / 1000) % 60;
-  
-  // Display minutes and seconds on the 7-segment display
-  sevseg.setNumber(remainingMinutes * 100 + remainingSeconds, 2); // Set the number to display
+  // Display timer duration on the 7-segment display
+  int secondsRemaining;
+  if (timerPaused) {
+    secondsRemaining = timerDuration / 1000; // Show remaining time when paused
+  } else {
+    secondsRemaining = (timerDuration - (millis() - timerStartTime)) / 1000;
+  }
+  sevseg.setNumber(secondsRemaining, -1); // Set the number to display
   sevseg.refreshDisplay(); // Refresh the display
 }
