@@ -2,13 +2,12 @@
 
 SevSeg sevseg; // Create an instance of the SevSeg library
 
-const int buttonPin = 2;
-const int buzzerPin = 3;
+const int buzzerPin = 2;
 
 const int incrementButtonPin = 4;
 const int decrementButtonPin = 5;
 const int startButtonPin = 6;
-const int modeButtonPin = 7;
+const int modeButtonPin = 3;
 
 const int buzzerDuration = 500; // 5 seconds
 
@@ -27,7 +26,6 @@ void setup() {
   
   sevseg.begin(COMMON_CATHODE, numDigits, digitPins, segmentPins);
   
-  pinMode(buttonPin, INPUT_PULLUP);
   pinMode(buzzerPin, OUTPUT);
   pinMode(incrementButtonPin, INPUT_PULLUP);
   pinMode(decrementButtonPin, INPUT_PULLUP);
