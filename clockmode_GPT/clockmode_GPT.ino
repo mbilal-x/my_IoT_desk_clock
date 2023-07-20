@@ -88,13 +88,16 @@ void loop() {
   
   // Display time based on the current mode
   if (isClockMode) {
-    // Get the current time in minutes and seconds
+    // Get the current time in hours and minutes
     unsigned long currentTime = millis();
-    int currentMinutes = currentTime / 60000;
-    int currentSeconds = (currentTime / 1000) % 60;
+    int currentHours = currentTime / 3600000;
+    int currentMinutes = (currentTime / 60000) % 60;
+    
+    // Combine hours and minutes for display (HHMM format)
+    int displayTime = currentHours * 100 + currentMinutes;
     
     // Display current time on the 7-segment display
-    sevseg.setNumber(currentMinutes * 100 + currentSeconds, 2);
+    sevseg.setNumber(displayTime, 2);
   } else {
     // Calculate remaining minutes and seconds
     int remainingMinutes = (timerDuration - (millis() - timerStartTime)) / 60000;
