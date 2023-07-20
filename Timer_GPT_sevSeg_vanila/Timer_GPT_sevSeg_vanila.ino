@@ -9,7 +9,7 @@ const int incrementButtonPin = 4;
 const int decrementButtonPin = 5;
 const int startButtonPin = 6;
 
-const int buzzerDuration = 5000; // 5 seconds
+const int buzzerDuration = 500; // 5 seconds
 
 unsigned long timerDuration = 0000; // Default timer duration is 1 minute
 unsigned long timerStartTime;
@@ -59,6 +59,22 @@ void loop() {
     
     // Check if the timer has finished
     if (elapsedTime >= timerDuration) {
+      digitalWrite(buzzerPin, HIGH); // Activate the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
+      digitalWrite(buzzerPin, LOW); // Turn off the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
+      digitalWrite(buzzerPin, HIGH); // Activate the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
+      digitalWrite(buzzerPin, LOW); // Turn off the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
+      digitalWrite(buzzerPin, HIGH); // Activate the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
+      digitalWrite(buzzerPin, LOW); // Turn off the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
+      digitalWrite(buzzerPin, HIGH); // Activate the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
+      digitalWrite(buzzerPin, LOW); // Turn off the buzzer
+      delay(buzzerDuration); // Sound the buzzer for the specified duration
       digitalWrite(buzzerPin, HIGH); // Activate the buzzer
       delay(buzzerDuration); // Sound the buzzer for the specified duration
       digitalWrite(buzzerPin, LOW); // Turn off the buzzer
